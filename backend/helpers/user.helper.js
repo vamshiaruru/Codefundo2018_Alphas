@@ -1,55 +1,38 @@
-const _=require("underscore");
-const userModel=require("../models/user.model");
-const hashPasswordHelper=require("../helpers/bcrypt.helper");
+const _ = require("lodash");
+const userModel = require("../models/user.model");
+const hashPasswordHelper = require("../helpers/bcrypt.helper");
 
-const login=(userData)=>{
-    return new Promise((resolve,reject)=>{
-        console.log(userData);
-        let queryPromise=userModel.findOne({mobile:userData.mobile}).exec();
-        queryPromise.then((dbData)=>{
-            if(_.isEmpty(dbData)){
-                resolve("user not found");
-            }
-            else{
-                if(hashPasswordHelper.comparePassword(userData.password, dbData.password)){
-                    resolve("success")
-                }
-                else{
-                    resolve("wrong password")
-                }
-            }
-        }).catch((err)=>{
-            reject(err);
-        })
+const login = async (userData) => {
+    let dbData = await userModel.findOne({mobile: userData.mobile}).exec();
+    if(_.isEmpty(dbData)){
+        return "User not found!";
+    }
+    else{
+        if(hashPasswordHelper.comparePassword(userData.password, dbData.password)){
+            return "success!";
+        }
+        else{
+            throw new Error("Wrong password");
+        }
+    }
+}
 
-    });
-};
-const signup=(userData)=>{
-    return new Promise((resolve,reject)=>{
-        let queryPromise=userModel.findOne({mobile:userData.mobile}).exec();
-        queryPromise.then((dbData)=>{
-            if(!_.isEmpty(dbData)){
-                resolve("user already exists")
-            }
-            else{
-                new userModel({
-                    mobile:userData.mobile,
-                    password:hashPasswordHelper.hashPassword(userData.password)
-                }).save((err,user)=>{
-                    if(err){
-                        reject(err)
-                    }
-                    else{
-                        resolve("user saved");
-                    }
-                })
-            }
-        }).catch((err)=>{
-            reject(err)
-        })
-    });
-};
-module.exports={
-    login:login,
-    signup:signup
+const signup = async (userData) => {
+    let dbData = await userModel.findOne({mobile: userData.mobile}).exec();
+    if(!_.isEmpty(dbData)){
+        return "User already exists";
+    }
+    else{
+        let schema = {
+            mobile: userData.mobile,
+            password: hashPasswordHelper.hashPassword(userData.password)
+        }
+        let status = await new userModel(schema).save();
+        return "User saved";
+    }
+}
+
+module.exports = {
+    login: login,
+    signup: signup
 }

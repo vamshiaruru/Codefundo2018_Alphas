@@ -1,19 +1,22 @@
 const userHelper = require("../helpers/user.helper");
 // todo: add data sanitization before updating db. Use express-validator.
-const login = (req, res) => {
-    userHelper.login(req.body).then((response) => {
+const login = async (req, res) => {
+    try {
+        response = await userHelper.login(req.body);
         res.send(response);
-    }).catch((err) => {
-        res.send("error");
-    });
-
+    } 
+    catch (err){
+        res.render("error", {message: err.message, error:err});
+    }
 };
-const signup = (req, res) => {
-    userHelper.signup(req.body).then((response)=>{
+const signup = async (req, res) => {
+    try {
+        response = await userHelper.login(req.body);
         res.send(response);
-    }).catch((err)=>{
-        res.send("error");
-    });
+    } 
+    catch (err){
+        res.render("error", {message: err.message, error:err});
+    }
 };
 module.exports = {
     login:login,
