@@ -7,8 +7,8 @@ const login=(req,res)=>{
     });
 
 };
-const signin=(req,res)=>{
-    userHelper.signin(req.body).then((response)=>{
+const signup=(req,res)=>{
+    userHelper.signup(req.body).then((response)=>{
         res.send(response);
     }).catch((err)=>{
         res.send("error");
@@ -16,5 +16,5 @@ const signin=(req,res)=>{
 };
 module.exports={
     login:login,
-    signin:signin
+    signup:signup
 }

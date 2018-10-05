@@ -52,5 +52,5 @@ const signup=(userData)=>{
 };
 module.exports={
     login:login,
-    signin:signin
+    signup:signup
 }
