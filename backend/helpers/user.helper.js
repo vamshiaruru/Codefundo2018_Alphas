@@ -11,12 +11,11 @@ const login=(userData)=>{
                 resolve("user not found");
             }
             else{
-                if(hashPasswordHelper.comparePassword(userData.password,dbData.password)){
+                if(hashPasswordHelper.comparePassword(userData.password, dbData.password)){
                     resolve("success")
                 }
                 else{
                     resolve("wrong password")
-
                 }
             }
         }).catch((err)=>{
