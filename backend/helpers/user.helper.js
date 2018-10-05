@@ -1,8 +1,10 @@
 const _=require("underscore");
 const userModel=require("../models/user.model");
 const hashPasswordHelper=require("../helpers/bcrypt.helper");
+
 const login=(userData)=>{
     return new Promise((resolve,reject)=>{
+        console.log(userData);
         let queryPromise=userModel.findOne({mobile:userData.mobile}).exec();
         queryPromise.then((dbData)=>{
             if(_.isEmpty(dbData)){
@@ -23,7 +25,7 @@ const login=(userData)=>{
 
     });
 };
-const signin=(userData)=>{
+const signup=(userData)=>{
     return new Promise((resolve,reject)=>{
         let queryPromise=userModel.findOne({mobile:userData.mobile}).exec();
         queryPromise.then((dbData)=>{
@@ -42,10 +44,7 @@ const signin=(userData)=>{
                         resolve("user saved");
                     }
                 })
-
-
             }
-
         }).catch((err)=>{
             reject(err)
         })
