@@ -1,14 +1,14 @@
-const mongoose=require("mongoose");
-const userSchema=new mongoose.Schema({
-    mobile:{
+const mongoose = require("mongoose");
+const userSchema = new mongoose.Schema({
+    mobile: {
         type:Number,
         required:true
     },
-    password:{
+    password: {
         type:String,
         required:true
     }
 });
 
-const userModel=mongoose.model("users",userSchema);
-module.exports=userModel;
+const userModel = mongoose.model("users",userSchema);
+module.exports = userModel;
