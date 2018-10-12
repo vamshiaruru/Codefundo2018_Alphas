@@ -4,8 +4,11 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const logger = require("morgan");
+const google = require("./routes/google");
 const userRoutes=require("./routes/userRoutes");
 const multer = require("multer")();
+const expressSession = require("express-session");
+const credentials = require("./config/auth");
 
 const app = express();
 
@@ -18,10 +21,13 @@ app.use(logger("dev"));
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(multer.array());
+app.use(expressSession({
+    secret: credentials.cookie.secret
+}));
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/", userRoutes);
-
+app.use("/google", google);
 app.use((req, res, next) => {
   next(createError(404));
 });
