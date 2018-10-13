@@ -8,7 +8,7 @@ const google = require("./routes/google");
 const userRoutes=require("./routes/userRoutes");
 const multer = require("multer")();
 const expressSession = require("express-session");
-const credentials = require("./config/auth");
+require('dotenv').config();
 
 const app = express();
 
@@ -22,7 +22,7 @@ app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(multer.array());
 app.use(expressSession({
-    secret: credentials.cookie.secret
+    secret: process.env.secret
 }));
 
 app.use(express.static(path.join(__dirname, "public")));

@@ -1,3 +1,4 @@
+backend/.env
 backend/googlecreds.txt
 backend/config/auth.js
 node_modules/
