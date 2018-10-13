@@ -2,7 +2,7 @@ const _ = require("lodash");
 const userModel = require("../models/user.model");
 const hashPasswordHelper = require("../helpers/bcrypt.helper");
 
-const login = async (userData) => {
+const login = async userData => {
     let dbData = await userModel.findOne({mobile: userData.mobile}).exec();
     if(_.isEmpty(dbData)){
         return "User not found!";
@@ -17,7 +17,7 @@ const login = async (userData) => {
     }
 }
 
-const signup = async (userData) => {
+const signup = async userData => {
     let dbData = await userModel.findOne({mobile: userData.mobile}).exec();
     if(!_.isEmpty(dbData)){
         return "User already exists";
@@ -32,7 +32,20 @@ const signup = async (userData) => {
     }
 }
 
+const changeMobile = async userData => {
+    let user = await userModel.findOne({email: userData.email}).exec();
+    if(_.isEmpty(user)){
+        throw new Error("User does not exist. :( ");
+    }
+    else{
+        user.mobile = userData.mobile;
+        user = await user.save();
+        return "Mobile number successfully updated";
+    }
+} 
+
 module.exports = {
     login: login,
-    signup: signup
+    signup: signup,
+    changeMobile: changeMobile
 }

@@ -8,10 +8,11 @@ router.get("/", (req, res) => {
 })
 
 router.get("/login", (req, res, next) => {
-    if (_.isEmpty(req.session.username)){
+    if (_.isEmpty(req.session.email)){
         next();
     }else{
         consle.log("non empty username");
+        // todo: redirect to home page.
     }
 }, passport.authenticate("google", {
     scope: [
@@ -20,8 +21,15 @@ router.get("/login", (req, res, next) => {
     ]
 }));
 
-router.get("/redirect", (req, res, next) => {
-    console.log(req);
+router.get("/redirect", passport.authenticate("google", {
+    failureRedirect: "/login",
+    session: false
+}), (req, res) => {
+    req.session.email = req.user.email;
+    if (req.user.mobile === 0){
+        res.redirect("/changeMobile");
+    }
+    res.send(`hi ${req.session.email}`);
 });
 
 module.exports = router;

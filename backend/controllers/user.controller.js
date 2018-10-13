@@ -18,7 +18,23 @@ const signup = async (req, res) => {
         res.render("error", {message: err.message, error:err});
     }
 };
+
+const changeMobile = async (req, res) => {
+    try{
+        data = {
+            email: req.session.email,
+            mobile: req.body.mobile
+        }
+        response = await userHelper.changeMobile(data);
+        res.send(response);
+    }
+    catch(err){
+        res.render("error", {message: err.message, error:err});
+    }
+}
+
 module.exports = {
-    login:login,
-    signup:signup
+    login: login,
+    signup: signup,
+    changeMobile: changeMobile
 }

@@ -10,14 +10,12 @@ passport.use(new googleStrategy({
 }, (accessToken, refreshToken, profile, done) => {
         userModel.findOne({googleId: profile.id}, (err, user) => {
             if(user){
-                console.log("google successfully logged");
                 done(null, user);
             } else{
-                new User({
+                new userModel({
                     googleId: profile.id,
                     email: profile.emails[0].value,
                     mobile: 0,
-                    password: "a"
                 }).save().then( newUser => {
                     done(null, newUser);
                 });
